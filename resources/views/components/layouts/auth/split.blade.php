@@ -3,41 +3,53 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
+    <body class="min-h-screen bg-white antialiased dark:bg-gradient-to-b dark:from-neutral-950 dark:to-neutral-900" style="font-family: 'Marcellus', serif;">
         <div class="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
-            <div class="bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-e dark:border-neutral-800">
-                <div class="absolute inset-0 bg-neutral-900"></div>
-                <a href="{{ route('home') }}" class="relative z-20 flex items-center text-lg font-medium" wire:navigate>
-                    <span class="flex h-10 w-10 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="me-2 h-7 fill-current text-white" />
-                    </span>
-                    {{ config('app.name', 'Laravel') }}
-                </a>
+            
+            {{-- COLONNE GAUCHE : PANEL VISUEL --}}
+            <div class="relative hidden h-full flex-col items-center justify-center text-white lg:flex dark:border-e dark:border-neutral-800 p-12">
+                <!-- <div class="absolute inset-0 bg-neutral-900"></div> -->
+                 <div class="absolute inset-0">
+                    <img src="{{ asset('images/connexion/connexion.png') }}" alt="Fond historique" class="h-full w-full object-cover opacity-70" />
+                    <div class="absolute inset-0 bg-black/50"></div>
+                </div>
 
-                @php
-                    [$message, $author] = str(Illuminate\Foundation\Inspiring::quotes()->random())->explode('-');
-                @endphp
+                <div class="relative z-20 text-center space-y-8">
+                    {{-- TITRE PRINCIPAL --}}
+                    <h1 class="text-4xl font-bold tracking-tight text-white font-title">
+                        ARTE FACTO
+                    </h1>
 
-                <div class="relative z-20 mt-auto">
-                    <blockquote class="space-y-2">
-                        <flux:heading size="lg">&ldquo;{{ trim($message) }}&rdquo;</flux:heading>
-                        <footer><flux:heading>{{ trim($author) }}</flux:heading></footer>
-                    </blockquote>
+                    {{-- LOGO --}}
+                    <a href="{{ route('home') }}" class="inline-flex items-center justify-center mx-auto" wire:navigate>
+                        <x-app-logo-icon class="h-35 w-35 fill-current text-white" />
+                    </a>
+
+                    {{-- CITATION --}}
+                    @php
+                        [$message, $author] = str(Illuminate\Foundation\Inspiring::quotes()->random())->explode('-');
+                    @endphp
+
+                <blockquote class="mt-8 space-y-2 text-sm italic font-body">
+                    <p class="text-white">&ldquo;{{ trim($message) }}&rdquo;</p>
+                    <footer class="text-neutral-400">— {{ trim($author) }}</footer>
+                </blockquote>
+
                 </div>
             </div>
+
+            {{-- COLONNE DROITE : FORMULAIRE --}}
             <div class="w-full lg:p-8">
                 <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                     <a href="{{ route('home') }}" class="z-20 flex flex-col items-center gap-2 font-medium lg:hidden" wire:navigate>
-                        <span class="flex h-9 w-9 items-center justify-center rounded-md">
-                            <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
-                        </span>
-
+                        <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
                         <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
                     </a>
                     {{ $slot }}
                 </div>
             </div>
         </div>
+
         @fluxScripts
     </body>
 </html>

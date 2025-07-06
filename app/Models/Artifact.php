@@ -76,8 +76,14 @@ class Artifact extends Model
         return $this->hasMany(CartItem::class);
     }
 
+    public function usersInCart(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'cart_items', 'artifact_id', 'user_id');
+    }
+
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
+
 }
