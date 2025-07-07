@@ -8,7 +8,7 @@
         <!-- Brand -->
         <div class="flex items-center">
             <a href="{{ route('admin.dashboard') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0" wire:navigate>
-                <span class="text-xl font-bold text-zinc-900 dark:text-white">Arte-Facto Admin</span>
+                <span class="text-sm lg:text-xl font-bold text-zinc-900 dark:text-white">Arte Facto</span>
             </a>
         </div>
 
@@ -64,6 +64,16 @@
             </flux:navbar>
         </div>
 
+        <!-- NAVBAR MOBILE ICONS -->
+        <div class="flex items-center space-x-3 lg:hidden">
+            <a href="{{ route('home') }}" wire:navigate><flux:icon name="home" class="w-6 h-6" /></a>
+            <a href="{{ route('admin.dashboard') }}" wire:navigate><flux:icon name="cog" class="w-6 h-6" /></a>
+            <a href="{{ route('admin.stats') }}" wire:navigate><flux:icon name="chart-bar-square" class="w-6 h-6" /></a>
+            <a href="{{ route('admin.artifacts.index') }}" wire:navigate><flux:icon name="cube" class="w-6 h-6" /></a>
+            <a href="{{ route('admin.auctions.index') }}" wire:navigate><flux:icon name="scale" class="w-6 h-6" /></a>
+            <a href="{{ route('admin.users.index') }}" wire:navigate><flux:icon name="user-group" class="w-6 h-6" /></a>
+        </div>
+
         <!-- Profil -->
         <div class="flex items-center space-x-2 rtl:space-x-reverse me-1.5">
             <flux:dropdown position="top" align="end">
@@ -97,6 +107,7 @@
                 </flux:menu>
             </flux:dropdown>
         </div>
+
     </flux:header>
 
     <!-- Contenu -->
