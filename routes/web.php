@@ -31,6 +31,9 @@ Route::get('/auctions', function () {
     return view('auctions.index');
 })->name('auctions.index');
 
+Route::get('/auction/{artifact}', function (\App\Models\Artifact $artifact) {
+    return view('auction.show', ['artifact' => $artifact]);
+})->name('auction.show');
 /*
 |--------------------------------------------------------------------------
 | Routes authentifiées (clients connectés)
@@ -63,6 +66,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('wishlist');
     })->name('wishlist');
 
+    // Demo Encheres
+    Route::get('/auction-demo', function () {
+        return view('auction.demo');
+    })->name('auction.demo');
+
     // Paramètres utilisateur (avec Volt)
     Route::redirect('settings', 'settings/profile');
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
@@ -89,9 +97,11 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->group(functio
 
     // Gestion du catalogue
     Route::prefix('catalog')->group(function () {
-        Route::get('/artifacts', function () {
-            return view('admin.artifacts.index');
-        })->name('admin.artifacts.index');
+    //     Route::get('/artifacts', function () {
+    //         return view('admin.artifacts.index');
+    //     })->name('admin.artifacts.index');
+
+        Route::get('/admin/catalog/artifacts', \App\Livewire\Admin\ArtifactCrud::class)->name('admin.artifacts.index');
 
         Route::get('/civilizations', function () {
             return view('admin.civilizations.index');

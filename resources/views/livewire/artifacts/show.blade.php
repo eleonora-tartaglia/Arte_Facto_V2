@@ -204,6 +204,16 @@
                         @endif
                     @endif
 
+                    <!-- demo enchere  -->
+                    @if($artifact->sale_type === 'auction')
+                        <a href="{{ route('auction.show', $artifact->id) }}"
+                        class="px-1 py-1 text-sm"
+                        style="background: rgba(144, 24, 180, 0.3); color: rgb(252, 252, 252); font-family: 'Cinzel', serif;">
+                        Demo enchère ⚖️
+                        </a>
+                    @endif
+
+
                 </div>
 
                 {{-- Description --}}
