@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;      // Permet de générer des e
 use Livewire\Attributes\Layout;                     // Attribut Livewire pour définir le layout utilisé
 use Livewire\Attributes\Validate;                   // Attribut Livewire pour valider des propriétés
 use Livewire\Volt\Component;                        // Classe de base d’un composant Livewire Volt
-use App\Providers\RouteServiceProvider;
+use App\Providers\AppServiceProvider;
 
 // Déclaration du composant Livewire avec un layout personnalisé pour les pages auth
 new #[Layout('components.layouts.auth')] class extends Component {
@@ -57,7 +57,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
         // On redirige vers la page souhaitée, ou par défaut vers "dashboard"
         // $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
         // On se sert de RouteServiceProvider::redirectTo() piur rediriger vers dash ou / 
-        $this->redirectIntended(default: AppServiceProvider::redirectTo(), navigate: true);
+        // $this->redirectIntended(default: AppServiceProvider::redirectTo(), navigate: true);
+        $this->redirectIntended(default: '/dashboard', navigate: true);
+
     }
 
     // Fonction qui empeche une personne de faire trop de tentatives de connexion en peu de temps : si la limite est dépassée, on génère un message d'erreur clair.

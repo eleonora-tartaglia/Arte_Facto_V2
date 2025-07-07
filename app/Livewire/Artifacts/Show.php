@@ -15,6 +15,8 @@ class Show extends Component
     public bool $inCart = false;
     public int $otherCartsCount = 0;
 
+    public bool $showIdentityModal = false;
+
     public function mount($id)
     {
         $this->artifact = Artifact::with(['civilization', 'source', 'tags', 'usersInCart'])
@@ -47,6 +49,21 @@ class Show extends Component
 
         // 🚀 Émet l'événement pour CartIndicator
         $this->dispatch('cartUpdated');
+    }
+
+    public function participateAuction()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (Auth::user()->identity_verified !== 'verified') {
+            $this->showIdentityModal = true;
+            return;
+        }
+
+        // Ici tu pourras ensuite rediriger vers la page live de l'enchère
+        session()->flash('message', 'Bienvenue à l\'enchère !');
     }
 
     private function checkCartStates()

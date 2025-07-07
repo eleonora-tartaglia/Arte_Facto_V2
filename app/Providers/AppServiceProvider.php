@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::composer(['components.layouts.app.header', 'components.layouts.app.sidebar'], function ($view) {
+        View::composer(['components.layouts.app.header', 'components.layouts.app.header_admin'], function ($view) {
             $view->with([
                 'civilizationsByRegion' => Civilization::all()->groupBy('region'),
                 'activeAuctionsCount' => Auction::where('status', 'active')->count(),

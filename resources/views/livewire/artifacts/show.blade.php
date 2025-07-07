@@ -188,12 +188,22 @@
                     @endif
 
                     @if($artifact->status !== 'sold' && !$inCart)
-                        <button wire:click="addToCart"
-                            class="px-1 py-1 text-sm"
-                            style="background: rgba(118, 94, 30, 0.58); color: rgb(252, 252, 252); font-family: 'Cinzel', serif;">
-                            Ajouter au panier 🧺
-                        </button>
+                        @if($artifact->sale_type === 'immediate')
+                            <button wire:click="addToCart"
+                                class="px-1 py-1 text-sm"
+                                style="background: rgba(118, 94, 30, 0.58); color: rgb(252, 252, 252); font-family: 'Cinzel', serif;">
+                                Ajouter au panier 🧺
+                            </button>
+
+                        @elseif($artifact->sale_type === 'auction')
+                            <button wire:click="participateAuction"
+                                class="px-1 py-1 text-sm"
+                                style="background: rgba(24, 180, 160, 0.3); color: rgb(252, 252, 252); font-family: 'Cinzel', serif;">
+                                Participer à l’enchère ⚖️
+                            </button>
+                        @endif
                     @endif
+
                 </div>
 
                 {{-- Description --}}
@@ -248,5 +258,13 @@
         </section>
     @endif
 
+    {{-- Modal pour upload pièce identité --}}
+    @if($showIdentityModal)
+        <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" wire:click="$set('showIdentityModal', false)">
+            <div class="bg-zinc-900 border border-amber-800 rounded-lg p-6" style="min-width: 400px;" wire:click.stop>
+                <livewire:identity-upload />
+            </div>
+        </div>
+    @endif
 
 </div>
