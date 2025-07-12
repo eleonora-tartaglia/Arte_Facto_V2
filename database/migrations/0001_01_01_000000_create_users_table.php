@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['user', 'admin'])->default('user');
             $table->enum('identity_verified', ['pending', 'verified', 'rejected'])->default('pending');
+            $table->string('identity_file')->nullable();
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

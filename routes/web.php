@@ -1,11 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+
+use App\Models\User;
+
 use Livewire\Volt\Volt;
+
 use App\Livewire\Home;
 use App\Livewire\Artifacts\Index as ArtifactsIndex;
 use App\Livewire\Artifacts\Show as ArtifactsShow;
 use App\Livewire\Cart\Index as CartIndex;
+
+use App\Livewire\Admin\ArtifactCrud;
+use App\Livewire\Admin\UserCrud;
+use App\Livewire\Admin\VerifyIdentities;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -97,11 +108,9 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->group(functio
 
     // Gestion du catalogue
     Route::prefix('catalog')->group(function () {
-    //     Route::get('/artifacts', function () {
-    //         return view('admin.artifacts.index');
-    //     })->name('admin.artifacts.index');
 
-        Route::get('/admin/catalog/artifacts', \App\Livewire\Admin\ArtifactCrud::class)->name('admin.artifacts.index');
+        Route::get('/admin/catalog/artifacts', ArtifactCrud::class)
+        ->name('admin.artifacts.index');
 
         Route::get('/civilizations', function () {
             return view('admin.civilizations.index');
@@ -133,15 +142,31 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'admin'])->group(functio
 
     // Gestion des utilisateurs
     Route::prefix('users')->group(function () {
-        Route::get('/', function () {
-            return view('admin.users.index');
-        })->name('admin.users.index');
 
-        Route::get('/verifications', function () {
-            return view('admin.verifications.index');
-        })->name('admin.verifications.index');
+        Route::get('/', UserCrud::class)
+        ->name('admin.users.index');
+
+        Route::get('/verifications', VerifyIdentities::class)
+        ->name('admin.verifications.index');
     });
-});
+
+        Route::get('/users/identity/{user}', function (User $user) {
+        if (!$user->identity_file) {
+            abort(404);
+        }
+
+        $path = 'private/identities/' . $user->identity_file;
+
+        if (!Storage::exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::get($path);
+        $type = Storage::mimeType($path);
+
+        return response($file, 200)->header('Content-Type', $type);
+    })->name('admin.users.identity')->middleware(['auth', 'verified', 'admin']);
+    });
 
 /*
 |--------------------------------------------------------------------------

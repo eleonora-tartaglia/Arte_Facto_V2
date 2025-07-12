@@ -15,12 +15,12 @@
             <!-- Navbar centrée (absolue) -->
             <div class="absolute left-1/2 transform -translate-x-1/2 hidden lg:flex">
                 <flux:navbar class="-mb-px">
-                    <flux:navbar.item :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
+                    <flux:navbar.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
                         Accueil
                     </flux:navbar.item>
 
                     <flux:dropdown>
-                        <flux:navbar.item as="button" icon-trailing="chevron-down" :current="request()->routeIs('artifacts.*')">
+                        <flux:navbar.item icon="book-open" as="button" icon-trailing="chevron-down" :current="request()->routeIs('artifacts.*')">
                             Catalogue
                         </flux:navbar.item>
 
@@ -46,7 +46,7 @@
                     </flux:dropdown>
 
 
-                    <flux:navbar.item :href="route('auctions.index')" :current="request()->routeIs('auctions.*')" wire:navigate>
+                    <flux:navbar.item icon="scale" :href="route('auctions.index')" :current="request()->routeIs('auctions.*')" wire:navigate>
                         Enchères
                         @if(($activeAuctionsCount ?? 0) > 0)
                             <flux:badge size="sm" variant="danger" class="ms-1">{{ $activeAuctionsCount }}</flux:badge>

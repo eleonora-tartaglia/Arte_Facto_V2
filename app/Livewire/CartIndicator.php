@@ -25,7 +25,10 @@ class CartIndicator extends Component
 
     public function render()
     {
-        $this->refreshCount(); // garde-le pour les changements via navigate
+        $this->refreshCount();
         return view('livewire.cart-indicator');
     }
 }
+
+
+

@@ -8,7 +8,7 @@
         <!-- Brand -->
         <div class="flex items-center">
             <a href="{{ route('admin.dashboard') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0" wire:navigate>
-                <span class="text-sm lg:text-xl font-bold text-zinc-900 dark:text-white">Arte Facto</span>
+                <span class="text-sm lg:text-xl font-bold text-zinc-900 dark:text-white">ARTE FACTO</span>
             </a>
         </div>
 
@@ -33,16 +33,17 @@
                     <flux:navbar.item icon="book-open" as="button" icon-trailing="chevron-down" :current="request()->routeIs('admin.artifacts.*') || request()->routeIs('admin.civilizations.*') || request()->routeIs('admin.tags.*') || request()->routeIs('admin.sources.*')">
                         Catalogue
                     </flux:navbar.item>
+
                     <flux:menu class="w-48">
                         <flux:menu.item icon="cube" :href="route('admin.artifacts.index')" wire:navigate>Artefacts</flux:menu.item>
-                        <flux:menu.item icon="globe-alt" :href="route('admin.civilizations.index')" wire:navigate>Civilisations</flux:menu.item>
+                        <flux:menu.item icon="globe-europe-africa" :href="route('admin.civilizations.index')" wire:navigate>Civilisations</flux:menu.item>
                         <flux:menu.item icon="hashtag" :href="route('admin.tags.index')" wire:navigate>Tags</flux:menu.item>
                         <flux:menu.item icon="building-library" :href="route('admin.sources.index')" wire:navigate>Sources</flux:menu.item>
                     </flux:menu>
                 </flux:dropdown>
 
                 <flux:dropdown>
-                    <flux:navbar.item icon="" as="button" icon-trailing="chevron-down" :current="request()->routeIs('admin.auctions.*') || request()->routeIs('admin.orders.*') || request()->routeIs('admin.transactions.*')">
+                    <flux:navbar.item icon="currency-euro" as="button" icon-trailing="chevron-down" :current="request()->routeIs('admin.auctions.*') || request()->routeIs('admin.orders.*') || request()->routeIs('admin.transactions.*')">
                         Ventes & Enchères
                     </flux:navbar.item>
                     <flux:menu class="w-48">

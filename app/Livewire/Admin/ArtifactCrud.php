@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Admin;
 
+use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\Artifact;
 use App\Models\Civilization;
 use App\Models\ArtifactSource;
@@ -10,8 +12,9 @@ use App\Models\ArtifactTag;
 
 class ArtifactCrud extends Component
 {
-    public $artifactId = null;
+    use WithFileUploads;
 
+    public $artifactId = null;
     public $showViewModal = false;
     public $viewArtifact = null;
 
@@ -19,7 +22,7 @@ class ArtifactCrud extends Component
            $archaeologist, $discovery_context, $materials = [], $dimensions = [],
            $condition_grade, $condition_notes, $has_restoration = false, $authenticated = false,
            $authentication_certificate, $provenance_history = [], $legend, $price,
-           $sale_type = 'immediate', $status = 'available', $images = [], $featured = false;
+           $sale_type = 'immediate', $status = 'available', $images = [], $newImages = [], $featured = false;
 
     public $tags = [];
 
@@ -47,12 +50,6 @@ class ArtifactCrud extends Component
         $this->allArtifacts = Artifact::with(['civilization', 'source', 'tags'])->get();
     }
 
-    public function view($id)
-    {
-        $this->viewArtifact = Artifact::with(['civilization', 'source', 'tags'])->findOrFail($id);
-        $this->showViewModal = true;
-    }
-
     protected function rules()
     {
         return [
@@ -64,8 +61,10 @@ class ArtifactCrud extends Component
             'discovery_year' => 'nullable|integer',
             'archaeologist' => 'nullable|string|max:255',
             'discovery_context' => 'nullable|string',
-            'materials' => 'nullable|array',
-            'dimensions' => 'nullable|array',
+
+            'materials' => 'nullable|string',
+            'dimensions' => 'nullable|string',
+
             'condition_grade' => 'nullable|string',
             'condition_notes' => 'nullable|string',
             'has_restoration' => 'boolean',
@@ -77,19 +76,16 @@ class ArtifactCrud extends Component
             'sale_type' => 'required|in:immediate,auction',
             'status' => 'required|in:available,sold,in_cart',
             'images' => 'nullable|array',
+            'newImages.*' => 'image|max:5000',
             'featured' => 'boolean',
             'tags' => 'nullable|array',
         ];
     }
 
-    public function resetForm()
+    public function view($id)
     {
-        $this->reset([
-            'artifactId', 'title', 'description', 'civilization_id', 'source_id', 'discovery_site', 'discovery_year',
-            'archaeologist', 'discovery_context', 'materials', 'dimensions', 'condition_grade', 'condition_notes',
-            'has_restoration', 'authenticated', 'authentication_certificate', 'provenance_history', 'legend',
-            'price', 'sale_type', 'status', 'images', 'featured', 'tags', 'showFormModal'
-        ]);
+        $this->viewArtifact = Artifact::with(['civilization', 'source', 'tags'])->findOrFail($id);
+        $this->showViewModal = true;
     }
 
     public function edit($id)
@@ -105,8 +101,8 @@ class ArtifactCrud extends Component
         $this->discovery_year = $artifact->discovery_year;
         $this->archaeologist = $artifact->archaeologist;
         $this->discovery_context = $artifact->discovery_context;
-        $this->materials = $artifact->materials ?? [];
-        $this->dimensions = $artifact->dimensions ?? [];
+        $this->materials = json_encode($artifact->materials);
+        $this->dimensions = json_encode($artifact->dimensions);
         $this->condition_grade = $artifact->condition_grade;
         $this->condition_notes = $artifact->condition_notes;
         $this->has_restoration = $artifact->has_restoration;
@@ -128,6 +124,15 @@ class ArtifactCrud extends Component
     {
         $this->validate();
 
+        // Upload d'abord
+        if ($this->newImages) {
+            foreach ($this->newImages as $uploadedImage) {
+                $path = $uploadedImage->store('artifacts', 'public'); 
+                $this->images[] = $path;
+            }
+        }
+
+        // Puis enregistre tout
         $artifact = Artifact::updateOrCreate(
             ['id' => $this->artifactId],
             [
@@ -139,8 +144,10 @@ class ArtifactCrud extends Component
                 'discovery_year' => $this->discovery_year,
                 'archaeologist' => $this->archaeologist,
                 'discovery_context' => $this->discovery_context,
-                'materials' => $this->materials,
-                'dimensions' => $this->dimensions,
+
+                'materials' => json_decode($this->materials, true) ?: [],
+                'dimensions' => json_decode($this->dimensions, true) ?: [],
+
                 'condition_grade' => $this->condition_grade,
                 'condition_notes' => $this->condition_notes,
                 'has_restoration' => $this->has_restoration,
@@ -156,11 +163,23 @@ class ArtifactCrud extends Component
             ]
         );
 
+        // Tags
         $artifact->tags()->sync($this->tags);
 
-        session()->flash('message', $this->artifactId ? 'Artefact mis à jour' : 'Artefact créé');
         $this->resetForm();
         $this->loadArtifacts();
+        session()->flash('message', $this->artifactId ? 'Artefact mis à jour' : 'Artefact créé');
+    }
+
+
+    public function resetForm()
+    {
+        $this->reset([
+            'artifactId', 'title', 'description', 'civilization_id', 'source_id', 'discovery_site', 'discovery_year',
+            'archaeologist', 'discovery_context', 'materials', 'dimensions', 'condition_grade', 'condition_notes',
+            'has_restoration', 'authenticated', 'authentication_certificate', 'provenance_history', 'legend',
+            'price', 'sale_type', 'status', 'images', 'newImages', 'featured', 'tags', 'showFormModal'
+        ]);
     }
 
     public function confirmDelete($id)
@@ -171,9 +190,14 @@ class ArtifactCrud extends Component
     public function delete()
     {
         Artifact::destroy($this->confirmingDeleteId);
-        session()->flash('message', 'Artefact supprimé');
         $this->confirmingDeleteId = null;
         $this->loadArtifacts();
+        session()->flash('message', 'Artefact supprimé');
+    }
+
+    public function getImageUrl($image)
+    {
+        return Str::startsWith($image, 'http') ? $image : asset('storage/' . $image);
     }
 
     public function render()
