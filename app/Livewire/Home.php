@@ -28,3 +28,5 @@ class Home extends Component
         return view('livewire.home')->layout('components.layouts.app');
     }
 }
+
+

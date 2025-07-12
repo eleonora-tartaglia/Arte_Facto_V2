@@ -7,3 +7,6 @@
         {{ $slot }}
     </x-layouts.app.header>
 @endif
+
+
+

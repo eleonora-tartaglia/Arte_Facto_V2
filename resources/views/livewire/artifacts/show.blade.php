@@ -18,7 +18,7 @@
             {{-- Images + Détails Archéologiques --}}
             <div class="space-y-8 max-w-[400px] mx-auto lg:mx-0">
                 <div class="aspect-square bg-zinc-900 border border-amber-900/30 overflow-hidden">
-                    <img src="{{ $artifact->images[0] ?? '/images/placeholder.jpg' }}" 
+                    <img src="{{ $this->getImageUrl($artifact->images[0]) }}"
                         alt="{{ $artifact->title }}"
                         class="w-full h-full object-cover">
                 </div>
@@ -61,14 +61,14 @@
                         </div>
                     @endif
 
-                    @if($artifact->materials)
+                    @if(is_array($artifact->materials) && count($artifact->materials))
                         <div class="flex justify-between py-2 border-b border-zinc-800">
                             <span class="text-gray-400">Matériaux :</span>
                             <span class="text-white">{{ implode(', ', $artifact->materials) }}</span>
                         </div>
                     @endif
 
-                    @if($artifact->dimensions)
+                    @if(is_array($artifact->dimensions) && count($artifact->dimensions))
                         <div class="flex justify-between py-2 border-b border-zinc-800">
                             <span class="text-gray-400">Dimensions :</span>
                             <span class="text-white">
@@ -203,16 +203,6 @@
                             </button>
                         @endif
                     @endif
-
-                    <!-- demo enchere  -->
-                    @if($artifact->sale_type === 'auction')
-                        <a href="{{ route('auction.show', $artifact->id) }}"
-                        class="px-1 py-1 text-sm"
-                        style="background: rgba(144, 24, 180, 0.3); color: rgb(252, 252, 252); font-family: 'Cinzel', serif;">
-                        Demo enchère ⚖️
-                        </a>
-                    @endif
-
 
                 </div>
 

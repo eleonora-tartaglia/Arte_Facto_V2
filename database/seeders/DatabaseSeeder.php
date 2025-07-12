@@ -33,17 +33,17 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Lara Croft',
                 'email' => 'lara@example.com',
-                'identity_verified' => 'verified',
+                'identity_verified' => 'pending',
             ],
             [
                 'name' => 'Benjamin Gates',
                 'email' => 'gates@example.com',
-                'identity_verified' => 'verified',
+                'identity_verified' => 'pending',
             ],
             [
                 'name' => 'Jack Sparrow',
                 'email' => 'jack@example.com',
-                'identity_verified' => 'verified',
+                'identity_verified' => 'pending',
             ],
             [
                 'name' => 'Bilbo Baggins',
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Allan Quatermain',
                 'email' => 'allan@example.com',
-                'identity_verified' => 'pending',
+                'identity_verified' => 'verified',
             ],
             [
                 'name' => 'Rick O’Connell',
@@ -753,7 +753,7 @@ class DatabaseSeeder extends Seeder
                 'wishlist_count' => 12,
             ],
             [
-                'title' => 'Parure royale Maya en jade et coquillage',
+                'title' => 'Ensemble de Parures royales Maya en jade et coquillage',
                 'description' => 'Ensemble exceptionnel composé d\'un pectoral, de boucles d\'oreilles et d\'un bracelet, caractéristique de l\'élite maya de la période classique (600-800 ap. J.-C.). Le pectoral central représente le dieu du maïs émergeant de sa carapace, sculpté dans un jade vert pomme translucide. Les éléments en coquillage spondylus orange créent un contraste saisissant. Les hiéroglyphes gravés au revers du pectoral mentionnent un "ajaw" (seigneur) de Palenque. Cette parure témoigne du raffinement extrême de l\'art lapidaire maya et de l\'importance symbolique du jade.',
                 'civilization_id' => 9, // Maya
                 'source_id' => 4, // Dr. Mitchell
@@ -778,7 +778,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 145000,
                 'sale_type' => 'auction',
                 'status' => 'available',
-                'images' => ['https://cdn.midjourney.com/94588a40-3941-456a-98f0-9f9db60ae54e/0_1.png'],
+                'images' => ['https://cdn.midjourney.com/94588a40-3941-456a-98f0-9f9db60ae54e/0_1.png','https://cdn.midjourney.com/94588a40-3941-456a-98f0-9f9db60ae54e/0_0.png','https://cdn.midjourney.com/94588a40-3941-456a-98f0-9f9db60ae54e/0_2.png'],
                 'featured' => true,
                 'wishlist_count' => 78,
             ],

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Artifacts;
 
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Artifact;
@@ -27,6 +28,11 @@ class Index extends Component
     {
         $this->resetPage();
     }
+
+    public function getImageUrl($image)
+        {
+            return Str::startsWith($image, 'http') ? $image : asset('storage/' . $image);
+        }
 
     public function render()
     {
@@ -65,3 +71,6 @@ class Index extends Component
         ])->layout('components.layouts.app');
     }
 }
+
+
+

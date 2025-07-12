@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Artifacts;
 
+use Illuminate\Support\Str;
 use Livewire\Component;
 use App\Models\Artifact;
 use App\Models\CartItem;
@@ -62,8 +63,7 @@ class Show extends Component
             return;
         }
 
-        // Ici tu pourras ensuite rediriger vers la page live de l'enchère
-        session()->flash('message', 'Bienvenue à l\'enchère !');
+        return redirect()->route('auction.show', $this->artifact->id);
     }
 
     private function checkCartStates()
@@ -74,6 +74,11 @@ class Show extends Component
         } else {
             $this->otherCartsCount = $this->artifact->usersInCart->count();
         }
+    }
+
+    public function getImageUrl($image)
+    {
+        return Str::startsWith($image, 'http') ? $image : asset('storage/' . $image);
     }
 
     public function render()

@@ -2,9 +2,17 @@
     {{-- Header de la page --}}
     <div class="bg-zinc-950 border-b border-amber-900/30 py-12">
         <div class="container mx-auto px-4">
+
             <h1 class="text-4xl font-bold text-white text-center mb-2" style="font-family: 'Cinzel', serif;">
-                Galerie
+                @if($civilizationFilter)
+                    Collection {{ \Illuminate\Support\Str::headline($civilizationFilter) }}
+                @elseif($regionFilter)
+                    Collection des {{ ucfirst($regionFilter) }}
+                @else
+                    Galerie des Artefacts
+                @endif
             </h1>
+
             <p class="text-gray-400 text-center">
                 Explorez notre collection d'artefacts authentiques
             </p>
@@ -67,7 +75,7 @@
                     onmouseout="this.style.borderColor='rgba(197,159,91,0.3)';">
 
                         <div class="aspect-square overflow-hidden">
-                            <img src="{{ $artifact->images[0] ?? '/images/placeholder.jpg' }}" 
+                            <img src="{{ $this->getImageUrl($artifact->images[0]) }}" 
                                 alt="{{ $artifact->title }}"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         </div>
